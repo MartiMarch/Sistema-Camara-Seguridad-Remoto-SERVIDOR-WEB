@@ -51,5 +51,51 @@
             }
             socket_close($socket);
         }
+        
+        public function videosValidos($fechaInicial, $fechaFinal)
+        {
+            $videosAceptados = array();
+            if($this->vlidarFecha($fechaFinal) and $this->vlidarFecha($fechaInicial))
+            {
+                require_once("Video.php");
+                require_once("MySQL.php");
+                $sql = new MySQL();
+                $videos = array();
+                $videos = $sql->obtenerVideos();
+                $fechaInicial = $this->añadirCeros($fechaInicial);
+                $fechaFinal = $this->añadirCeros($fechaFinal);
+                for($i = 0; $i < count($videos); ++$i)
+                {
+                    $año = strval($videos[$i]->getYear());
+                    $mes = strval($videos[$i]->getMonth());
+                    $dia = strval($videos[$i]->getDay());
+                    $fecha = $dia . "-" . $mes . "-" . $año;
+                    $fecha = $this->añadirCeros($fecha);
+                    if($fechaInicial < $fecha and $fechaFinal > $fecha)
+                    {
+                        array_push($videosAceptados, $videos[$i]);
+                    }
+                }
+            }
+            else
+            {
+                echo("<script type='text/javascript'>alert(Alguna de las fechas es incorrecta.);</script>");
+            }
+            return $videosAceptados;
+        }
+        
+        public function vlidarFecha($fecha)
+        {
+            $fecha = str_replace("/", "-", $fecha);
+            $formato = DateTime::createFromFormat("d-m-Y", $fecha);
+            return $formato;
+        }
+        
+        public function añadirCeros($fecha)
+        {
+            $resultado = date("d.m.Y", strtotime($fecha));
+            $resultado = str_replace(".", "-", $resultado);
+            return strtotime($resultado);
+        }
     }
 ?>
