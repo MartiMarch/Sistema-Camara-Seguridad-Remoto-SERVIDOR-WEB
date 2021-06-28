@@ -45,7 +45,7 @@ class Video{
     {
         if(!file_exists("../Multimedia/" . $this->id . "mp4"))
         {
-            $rutaServidorWeb = $_SERVER['DOCUMENT_ROOT'] . "/Sistema-Camara-Seguridad-Remoto/Multimedia";
+            $rutaServidorWeb = $_SERVER['DOCUMENT_ROOT'] . "/PhpProject1/Multimedia";
             $rutaServidorWeb = str_replace('/', '\\', $rutaServidorWeb);
             $rutaVideo = 'C:/SGCSR/' . $this->id . ".mp4";
             $rutaVideo = str_replace('/', '\\', $rutaVideo);
